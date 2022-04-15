@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <NavTabs />
+    <Navbar />
     <h1 class="mt-5">人氣餐廳</h1>
 
     <hr />
@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import NavTabs from '../components/NavTabs'
+import Navbar from '../components/Navbar'
 
 const dummyData = {
   restaurants: [
@@ -234,7 +234,7 @@ const dummyData = {
 
 export default {
   components: {
-    NavTabs,
+    Navbar,
   },
   data() {
     return {

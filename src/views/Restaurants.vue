@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <NavTabs />
+    <Navbar />
 
     <RestaurantsNavPills :categories="categories" />
 
@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-import NavTabs from '../components/NavTabs'
+import Navbar from '../components/Navbar'
 import RestaurantCard from '../components/RestaurantCard'
 import RestaurantsNavPills from '../components/RestaurantsNavPills'
 import RestaurantsPagination from '../components/RestaurantsPagination'
@@ -306,7 +306,7 @@ const dummyData = {
 
 export default {
   components: {
-    NavTabs,
+    Navbar,
     RestaurantCard,
     RestaurantsNavPills,
     RestaurantsPagination,
