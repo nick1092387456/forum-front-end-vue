@@ -14,7 +14,7 @@
         </button>
         <h3>
           <router-link
-            :to="{ name: 'user-profile', params: { id: comment.User.id } }"
+            :to="{ name: 'users-profile', params: { id: comment.User.id } }"
           >
             {{ comment.User.name }}</router-link
           >
