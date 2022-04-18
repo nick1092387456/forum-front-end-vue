@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.stop.prevent="handleSubmit">
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -81,7 +81,15 @@
 
     <div class="form-group">
       <label for="image">Image</label>
+      <img
+        v-if="restaurant.image"
+        :src="restaurant.image"
+        class="d-block img-thumbnail mb-3"
+        width="200"
+        height="200"
+      />
       <input
+        @change="handleFileChange"
         id="image"
         type="file"
         name="image"
@@ -145,6 +153,25 @@ export default {
   methods: {
     fetchCategories() {
       this.categories = dummyData.categories
+    },
+    handleFileChange(e) {
+      const { files } = e.target
+      if (files.length === 0) {
+        this.restaurant.image = ''
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.restaurant.image = imageURL
+      }
+    },
+    handleSubmit(e) {
+      const form = e.target
+      //將form使用FormData包裝，再使用entries轉換，轉換後的檔案會以[key,value]的陣列格式呈現
+      const formData = new FormData(form)
+      //這裡使用for of 配合 解構賦值 console出表單的內容。
+      // for (let [name, value] of formData.entries()) {
+      //   console.log(name + ': ' + value)
+      // }
+      this.$emit('after-submit', formData)
     },
   },
 }
