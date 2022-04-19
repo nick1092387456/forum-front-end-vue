@@ -24,27 +24,29 @@
           </ul>
           <p>
             <template v-if="isCurrentUser">
-              <a href="/users/2/edit"
-                ><button type="submit" class="btn btn-primary">edit</button></a
+              <router-link :to="{ name: 'user-edit', params: { id: user.id } }"
+                ><button type="submit" class="btn btn-primary">
+                  edit
+                </button></router-link
               >
             </template>
             <template v-else>
-                <button
-                  v-if="user.isFollowed"
-                  type="button"
-                  class="btn btn-danger"
-                  @click.stop.prevent="deleteFollow(user.id)"
-                >
-                  取消追蹤
-                </button>
-                <button
-                  v-else
-                  type="button"
-                  class="btn btn-primary"
-                  @click.stop.prevent="addFollow(user.id)"
-                >
-                  追蹤
-                </button>
+              <button
+                v-if="user.isFollowed"
+                type="button"
+                class="btn btn-danger"
+                @click.stop.prevent="deleteFollow(user.id)"
+              >
+                取消追蹤
+              </button>
+              <button
+                v-else
+                type="button"
+                class="btn btn-primary"
+                @click.stop.prevent="addFollow(user.id)"
+              >
+                追蹤
+              </button>
             </template>
           </p>
         </div>

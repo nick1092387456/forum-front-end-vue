@@ -50,6 +50,11 @@ const routes = [
     component: () => import('../views/User.vue'),
   },
   {
+    path: '/users/:id/edit',
+    name: 'user-edit',
+    component: () => import('../views/UserEdit.vue'),
+  },
+  {
     path: '/SignUp',
     name: 'Sign-Up',
     component: () => import('../views/SingUp.vue'),
