@@ -133,6 +133,20 @@ const dummyData = {
 }
 
 export default {
+  props: {
+    initialRestaurant: {
+      type: Object,
+      default: () => ({
+        name: '',
+        categoryId: '',
+        tel: '',
+        address: '',
+        description: '',
+        image: '',
+        openingHours: '',
+      }),
+    },
+  },
   data() {
     return {
       restaurant: {
@@ -149,6 +163,10 @@ export default {
   },
   created() {
     this.fetchCategories()
+    this.restaurant = {
+      ...this.restaurant,
+      ...this.initialRestaurant,
+    }
   },
   methods: {
     fetchCategories() {
@@ -167,10 +185,6 @@ export default {
       const form = e.target
       //將form使用FormData包裝，再使用entries轉換，轉換後的檔案會以[key,value]的陣列格式呈現
       const formData = new FormData(form)
-      //這裡使用for of 配合 解構賦值 console出表單的內容。
-      // for (let [name, value] of formData.entries()) {
-      //   console.log(name + ': ' + value)
-      // }
       this.$emit('after-submit', formData)
     },
   },

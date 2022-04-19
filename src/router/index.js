@@ -80,6 +80,11 @@ const routes = [
     component: () => import('../views/AdminRestaurant.vue'),
   },
   {
+    path: '/admin/restaurants/:id/edit',
+    name: 'admin-restaurant-edit',
+    component: () => import('../views/AdminRestaurantEdit.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: NotFound,

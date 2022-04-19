@@ -13,6 +13,7 @@ export default {
   },
   methods: {
     handleAfterSubmit(formData) {
+      //這裡使用for of 配合 解構賦值 console出表單的內容。
       for (let [name, value] of formData.entries()) {
         console.log(name + ': ' + value)
       }
