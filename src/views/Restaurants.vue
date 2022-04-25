@@ -29,6 +29,8 @@ import Navbar from '../components/Navbar'
 import RestaurantCard from '../components/RestaurantCard'
 import RestaurantsNavPills from '../components/RestaurantsNavPills'
 import RestaurantsPagination from '../components/RestaurantsPagination'
+import restaurantAPI from './../apis/restaurants'
+import { Toast } from './../utils/helpers'
 
 const dummyData = {
   restaurants: [
@@ -324,27 +326,41 @@ export default {
   },
 
   created() {
-    this.fetchRestaurants()
+    const { page = '', categoryId = '' } = this.$route.query
+    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
   },
-
+  beforeRouteUpdate(to, from, next) {
+    const { page = '', categoryId = '' } = to.query
+    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
+    next()
+  },
   methods: {
-    fetchRestaurants() {
-      const {
-        restaurants,
-        categories,
-        categoryId,
-        page,
-        totalPage,
-        prev,
-        next,
-      } = dummyData
-      this.restaurants = restaurants
-      this.categories = categories
-      this.categoryId = categoryId
-      this.page = page
-      this.totalPage = totalPage
-      this.prev = prev
-      this.next = next
+    async fetchRestaurants({ queryPage, queryCategoryId }) {
+      try {
+        const response = await restaurantAPI.getRestaurants({
+          page: queryPage,
+          categoryId: queryCategoryId,
+        })
+        const {
+          restaurants,
+          categories,
+          categoryId,
+          page,
+          totalPage,
+          prev,
+          next,
+        } = response.data
+        this.restaurants = restaurants
+        this.categories = categories
+        this.categoryId = categoryId
+        this.page = page
+        this.totalPage = totalPage
+        this.prev = prev
+        this.next = next
+      } catch (err) {
+        Toast.fire({ icon: 'error', title: '無法取得餐廳資料，請稍後在試' })
+        console.log(err)
+      }
     },
   },
 }

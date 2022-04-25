@@ -5,8 +5,8 @@
         class="card-img-top"
         :src="restaurant.image"
         alt="Card image cap"
-        width="286px"
-        height="180px"
+        width="286"
+        height="180"
       />
       <div class="card-body">
         <p class="card-text title-wrap">
