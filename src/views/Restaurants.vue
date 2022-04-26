@@ -1,7 +1,7 @@
 <template>
   <div class="container py-5">
     <Navbar />
-
+    <NavTabs />
     <RestaurantsNavPills :categories="categories" />
 
     <div class="row">
@@ -26,6 +26,7 @@
 </template>
 <script>
 import Navbar from '../components/Navbar'
+import NavTabs from '../components/NavTabs.vue'
 import RestaurantCard from '../components/RestaurantCard'
 import RestaurantsNavPills from '../components/RestaurantsNavPills'
 import RestaurantsPagination from '../components/RestaurantsPagination'
@@ -309,6 +310,7 @@ const dummyData = {
 export default {
   components: {
     Navbar,
+    NavTabs,
     RestaurantCard,
     RestaurantsNavPills,
     RestaurantsPagination,

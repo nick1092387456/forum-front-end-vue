@@ -1,6 +1,7 @@
 <template>
   <div class="container py-5">
     <Navbar />
+    <NavTabs />
     <h1 class="mt-5">美食達人</h1>
     <hr />
     <div class="row text-center">
@@ -36,6 +37,7 @@
 </template>
 <script>
 import Navbar from '../components/Navbar'
+import NavTabs from '../components/NavTabs.vue'
 
 const dummyData = {
   users: [
@@ -83,6 +85,7 @@ const dummyData = {
 export default {
   components: {
     Navbar,
+    NavTabs,
   },
   data() {
     return {

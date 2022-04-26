@@ -1,6 +1,7 @@
 <template>
   <div class="container py-5">
     <Navbar />
+    <NavTabs />
     <h1 class="mt-5">人氣餐廳</h1>
 
     <hr />
@@ -56,6 +57,7 @@
 </template>
 <script>
 import Navbar from '../components/Navbar'
+import NavTabs from '../components/NavTabs.vue'
 
 const dummyData = {
   restaurants: [
@@ -235,6 +237,7 @@ const dummyData = {
 export default {
   components: {
     Navbar,
+    NavTabs,
   },
   data() {
     return {
