@@ -38,50 +38,9 @@
 <script>
 import Navbar from '../components/Navbar'
 import NavTabs from '../components/NavTabs.vue'
+import usersTopAPI from '../apis/users'
+import { Toast } from '../utils/helpers'
 
-const dummyData = {
-  users: [
-    {
-      id: 1,
-      name: 'root',
-      email: 'root@example.com',
-      password: '$2a$10$4CP0TARxPqzDP4EoM45pyezwbK0Ea14oda2SSFLaIL.flfmvv7r3O',
-      isAdmin: true,
-      image: 'https://i.imgur.com/58ImzMM.png',
-      createdAt: '2022-02-16T09:38:00.000Z',
-      updatedAt: '2022-02-16T09:38:00.000Z',
-      Followers: [],
-      FollowerCount: 1,
-      isFollowed: true,
-    },
-    {
-      id: 2,
-      name: 'user1',
-      email: 'user1@example.com',
-      password: '$2a$10$ksqCnkzIO9N9jw80hTY6Xes01kJ1.S/PM4aMXaesyIRgthSwDSVLe',
-      isAdmin: false,
-      image: null,
-      createdAt: '2022-02-16T09:38:00.000Z',
-      updatedAt: '2022-02-16T09:38:00.000Z',
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-    {
-      id: 3,
-      name: 'user2',
-      email: 'user2@example.com',
-      password: '$2a$10$4nrzj/KPPGL8IcAKwy6yM.Rz7rAcE5kSHlZq4E0LuHaiPerE5evpG',
-      isAdmin: false,
-      image: null,
-      createdAt: '2022-02-16T09:38:00.000Z',
-      updatedAt: '2022-02-16T09:38:00.000Z',
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-  ],
-}
 export default {
   components: {
     Navbar,
@@ -96,21 +55,40 @@ export default {
     this.fetchUsers()
   },
   methods: {
-    fetchUsers() {
-      const { users } = dummyData
-      this.users = users
+    async fetchUsers() {
+      try {
+        const { data } = await usersTopAPI.getTopUsers()
+        const { users } = data
+        this.users = users
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '抓取最歡迎使用者的資料失敗，請稍後再試',
+        })
+        console.log(error)
+      }
     },
-    addFollow(userId) {
-      this.users = this.users.map((user) => {
-        if (user.id !== userId) return user
-        else {
-          return {
-            ...user,
-            FollowerCount: user.FollowerCount + 1,
-            isFollowed: true,
+    async addFollow(userId) {
+      try {
+        const { data } = await usersTopAPI.addFollow({ userId })
+        if (data.status !== 'success') throw new Error(data.message)
+        this.users = this.users.map((user) => {
+          if (user.id !== userId) return user
+          else {
+            return {
+              ...user,
+              FollowerCount: user.FollowerCount + 1,
+              isFollowed: true,
+            }
           }
-        }
-      })
+        })
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '新增追蹤失敗，請稍後再試',
+        })
+        console.log(error)
+      }
     },
     deleteFollow(userId) {
       this.users = this.users.map((user) => {

@@ -58,6 +58,9 @@
 <script>
 import Navbar from '../components/Navbar'
 import NavTabs from '../components/NavTabs.vue'
+import restaurantsTopAPI from '../apis/restaurants'
+import userAPI from '../apis/users'
+import { Toast } from '../utils/helpers'
 
 const dummyData = {
   restaurants: [
@@ -248,33 +251,50 @@ export default {
     this.fetchRestaurants()
   },
   methods: {
-    fetchRestaurants() {
-      const { restaurants } = dummyData
-      this.restaurants = restaurants
+    async fetchRestaurants() {
+      try {
+        const { data } = await restaurantsTopAPI.getTopRestaurants()
+        const { restaurants } = data
+        this.restaurants = restaurants
+      } catch (error) {
+        Toast.fire({ icon: 'error', title: '人氣餐廳數據載入失敗，請稍後再試' })
+      }
     },
-    addFavorite(restaurantId) {
-      this.restaurants = this.restaurants
-        .map((restaurant) => {
-          if (restaurant.id !== restaurantId) return restaurant
-          return {
-            ...restaurant,
-            FavoriteCount: restaurant.FavoriteCount + 1,
-            isFavorited: true,
-          }
-        })
-        .sort((x, y) => y.FavoriteCount - x.FavoriteCount)
+    async addFavorite(restaurantId) {
+      try {
+        const { data } = await userAPI.addFavorite({ restaurantId })
+        if (data.status !== 'success') throw new Error(data.message)
+        this.restaurants = this.restaurants
+          .map((restaurant) => {
+            if (restaurant.id !== restaurantId) return restaurant
+            return {
+              ...restaurant,
+              FavoriteCount: restaurant.FavoriteCount + 1,
+              isFavorited: true,
+            }
+          })
+          .sort((x, y) => y.FavoriteCount - x.FavoriteCount)
+      } catch (error) {
+        Toast.fire({ icon: 'error', title: '新增最愛失敗，請稍後再試' })
+      }
     },
-    deleteFavorite(restaurantId) {
-      this.restaurants = this.restaurants
-        .map((restaurant) => {
-          if (restaurant.id !== restaurantId) return restaurant
-          return {
-            ...restaurant,
-            FavoriteCount: restaurant.FavoriteCount - 1,
-            isFavorited: false,
-          }
-        })
-        .sort((x, y) => y.FavoriteCount - x.FavoriteCount)
+    async deleteFavorite(restaurantId) {
+      try {
+        const { data } = await userAPI.deleteFavorite({ restaurantId })
+        if (data.status !== 'success') throw new Error(data.message)
+        this.restaurants = this.restaurants
+          .map((restaurant) => {
+            if (restaurant.id !== restaurantId) return restaurant
+            return {
+              ...restaurant,
+              FavoriteCount: restaurant.FavoriteCount - 1,
+              isFavorited: false,
+            }
+          })
+          .sort((x, y) => y.FavoriteCount - x.FavoriteCount)
+      } catch (error) {
+        Toast.fire({ icon: 'error', title: '刪除最愛失敗，請稍後再試' })
+      }
     },
   },
 }
