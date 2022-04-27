@@ -1320,10 +1320,9 @@ export default {
     const { id: userId } = this.$route.params
     this.fetchProfile(userId)
   },
-  beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate(to) {
     const { id } = to.params
     this.fetchProfile(id)
-    next()
   },
   methods: {
     fetchProfile(userId) {

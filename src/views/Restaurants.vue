@@ -331,10 +331,9 @@ export default {
     const { page = '', categoryId = '' } = this.$route.query
     this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
   },
-  beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate(to) {
     const { page = '', categoryId = '' } = to.query
     this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
-    next()
   },
   methods: {
     async fetchRestaurants({ queryPage, queryCategoryId }) {
