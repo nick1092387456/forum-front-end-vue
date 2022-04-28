@@ -43,6 +43,9 @@
 
 <script>
 import { emptyImageFilter } from './../utils/mixins'
+import adminAPI from '../apis/admin'
+import { Toast } from '../utils/helpers'
+
 const dummyData = {
   restaurant: {
     id: 2,
@@ -85,20 +88,29 @@ export default {
     const { id: restaurantId } = this.$route.params
     this.fetchRestaurant(restaurantId)
   },
+  beforeRouteUpdate(to) {
+    const { id } = to.params
+    this.fetchRestaurant(id)
+  },
   methods: {
-    fetchRestaurant(restaurantId) {
-      console.log(restaurantId)
-      const { restaurant } = dummyData
-      this.restaurant = {
-        ...this.restaurant,
-        id: restaurant.id,
-        name: restaurant.name,
-        categoryName: restaurant.Category.name,
-        image: restaurant.image,
-        openingHours: restaurant.opening_hours,
-        tel: restaurant.tel,
-        address: restaurant.address,
-        description: restaurant.description,
+    async fetchRestaurant(restaurantId) {
+      try {
+        const { data } = await adminAPI.restaurants.getDetail({ restaurantId })
+        const { restaurant } = data
+        this.restaurant = {
+          ...this.restaurant,
+          id: restaurant.id,
+          name: restaurant.name,
+          categoryName: restaurant.Category.name,
+          image: restaurant.image,
+          openingHours: restaurant.opening_hours,
+          tel: restaurant.tel,
+          address: restaurant.address,
+          description: restaurant.description,
+        }
+      } catch (error) {
+        Toast.fire({ icon: 'error', title: '無法抓取餐廳資料，請稍後再試' })
+        console.log(error)
       }
     },
   },

@@ -185,7 +185,6 @@ export default {
     },
     handleSubmit(e) {
       const form = e.target
-      //將form使用FormData包裝，再使用entries轉換，轉換後的檔案會以[key,value]的陣列格式呈現
       const formData = new FormData(form)
       this.$emit('after-submit', formData)
     },
