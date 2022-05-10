@@ -134,6 +134,7 @@ export default {
           ...data.category,
         })
         this.newCategoryName = ''
+        this.fetchCategories()
       } catch (error) {
         Toast.fire({ icon: 'error', title: '餐廳類別新增失敗，請稍後再試' })
         console.log(error)
